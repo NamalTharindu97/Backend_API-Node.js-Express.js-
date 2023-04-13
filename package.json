@@ -1,0 +1,11 @@
+{
+  "name": "backend-epi",
+  "version": "1.0.0",
+  "description": "Backend API with all the authentications",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Namal",
+  "license": "MIT"
+}
