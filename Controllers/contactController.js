@@ -9,6 +9,12 @@ const getContact = (req, res) => {
 //@Route POST api/contacts
 //@access public
 const postContact = (req, res) => {
+  console.log("this is the body", req.body);
+  const { name, email, phone } = req.body;
+  if (!name || !email || !phone) {
+    res.status(400);
+    throw new Error("all fields are madotory");
+  }
   res.status(200).json({ message: "create new contact" });
 };
 
