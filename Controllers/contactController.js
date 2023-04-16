@@ -1,10 +1,12 @@
 const asyncHandler = require("express-async-handler");
+const Contact = require("../models/contactModel");
 
 //@desc GET all contacts
 //@Route GET api/contacts
 //@access public
 const getContact = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "get all contacts" });
+  const contacts = await Contact.find();
+  res.status(200).json(contacts);
 });
 
 //@desc POST contacts
@@ -17,28 +19,54 @@ const postContact = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("all fields are madotory");
   }
-  res.status(200).json({ message: "create new contact" });
+  const contact = await Contact.create({
+    name,
+    email,
+    phone,
+  });
+  res.status(200).json(contact);
 });
 
 //@desc GET one contact
 //@Route GET api/contacts/1
 //@access public
 const getOneContact = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: `get contact ${req.params.id}` });
+  const contact = await Contact.findById(req.params.id);
+  if (!contact) {
+    res.status(404);
+    throw new Error("Contact not found");
+  }
+  res.status(200).json(contact);
 });
 
 //@desc PUT one contact
 //@Route PUT api/contacts/1
 //@access public
 const updateContact = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: `updatet contact ${req.params.id}` });
+  const contact = await Contact.findById(req.params.id);
+  if (!contact) {
+    res.status(404);
+    throw new Error("contact not found");
+  }
+  const updateContact = await Contact.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true }
+  );
+
+  res.status(200).json(updateContact);
 });
 
 //@desc GET one contact
 //@Route GET api/contacts/1
 //@access public
 const deleteContact = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: `delete contact ${req.params.id}` });
+  const contact = await Contact.findByIdAndDelete(req.params.id);
+  if (!contact) {
+    res.status(404);
+    throw new Error("contact Not found");
+  }
+  res.status(200).json(contact);
 });
 
 module.exports = {
